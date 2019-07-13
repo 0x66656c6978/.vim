@@ -2,9 +2,8 @@
 P_=`pwd`
 
 echo Installing pathogen
-curl -LSso $HOME/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
 mkdir -p $HOME/.vim/autoload $HOME/.vim/bundle 
+curl -LSso $HOME/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 echo Installing pathogen bundles from git repositories to $HOME/.vim/bundle
 cd $HOME/.vim/bundle
