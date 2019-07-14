@@ -152,3 +152,12 @@ execute pathogen#infect()
 map <C-n> :NERDTreeToggle<CR>
 
 colorscheme gruvbox
+
+set laststatus=2
+
+let g:lightline = {
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+  \     }
+  \ }

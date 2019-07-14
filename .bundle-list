@@ -7,3 +7,10 @@ https://github.com/honza/vim-snippets.git
 https://github.com/Raimondi/delimitMate.git
 https://github.com/tpope/vim-fugitive.git
 https://github.com/junegunn/fzf.vim.git
+https://github.com/itchyny/lightline.vim
+https://github.com/terryma/vim-multiple-cursors.git
+https://github.com/tpope/vim-surround.git
+https://github.com/editorconfig/editorconfig-vim.git
+https://github.com/mattn/emmet-vim.git
+https://github.com/w0rp/ale.git
+https://github.com/airblade/vim-gitgutter.git
