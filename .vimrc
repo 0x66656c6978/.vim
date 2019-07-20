@@ -2,89 +2,17 @@ if &compatible
   set nocompatible
 endif
 
-" When the +eval feature is missing, the set command above will be skipped.
-" Use a trick to reset compatible only when the +eval feature is missing.
 silent! while 0
   set nocompatible
 silent! endwhile
 
-" Allow backspacing over everything in insert mode.
-set backspace=indent,eol,start
-
-set history=200		" keep 200 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set wildmenu		" display completion matches in a status line
-
-set ttimeout		" time out for key codes
-set ttimeoutlen=100	" wait up to 100ms after Esc for special key
-
-" Show @@@ in the last line if it is truncated.
-set display=truncate
-
-" Show a few lines of context around the cursor.  Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
-set scrolloff=5
-
-" Do incremental searching when it's possible to timeout.
-if has('reltime')
-  set incsearch
-endif
-
-" Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
-" confusing.
-set nrformats-=octal
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries.
-if has('win32')
-  set guioptions-=t
-endif
-
-" Don't use Ex mode, use Q for formatting.
-" Revert with ":unmap Q".
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-" Revert with ":iunmap <C-U>".
-inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine.  By enabling it you
-" can position the cursor, Visually select and scroll with the mouse.
-if has('mouse')
-  set mouse=a
-endif
-
-" Switch syntax highlighting on when the terminal has colors or when using the
-" GUI (which always has colors).
-if &t_Co > 2 || has("gui_running")
-  " Revert with ":syntax off".
-  syntax on
-
-  " I like highlighting strings inside C comments.
-  " Revert with ":unlet c_comment_strings".
-  let c_comment_strings=1
-endif
-
-" Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  " Revert with ":filetype off".
   filetype plugin indent on
 
-  " Put these in an autocmd group, so that you can revert them with:
-  " ":augroup vimStartup | au! | augroup END"
   augroup vimStartup
     au!
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid, when inside an event handler
-    " (happens when dropping a file on gvim) and for a commit message (it's
-    " likely a different one than last time).
     autocmd BufReadPost *
       \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
       \ |   exe "normal! g`\""
@@ -92,43 +20,58 @@ if has("autocmd")
 
   augroup END
 
-endif " has("autocmd")
+endif
 
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-" Revert with: ":delcommand DiffOrig".
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 		  \ | wincmd p | diffthis
 endif
 
-if has('langmap') && exists('+langremap')
-  " Prevent that the langmap option applies to characters that result from a
-  " mapping.  If set (default), this may break plugins (but it's backward
-  " compatible).
-  set nolangremap
-endif
-
-" indentation
-" tabs -> 4 spaces
+set nolangremap
+set incsearch
+set mouse=a
+set ttyfast
+set backspace=indent,eol,start
+set ruler		" show the cursor position all the time
+set nrformats-=octal
+set showcmd		" display incomplete commands
+set ttimeout		" time out for key codes
+set ttimeoutlen=100	" wait up to 100ms after Esc for special key
+set display=truncate
+set scrolloff=5
 set tabstop=8 softtabstop=4 expandtab shiftwidth=4 smarttab
 set smartindent
-
-" line numbers
+set shiftround
 set number
-set relativenumber
-
-" syntax highlighting
-syntax on
-
-" color scheme
+set numberwidth=5
+set rnu
 set t_Co=256
-execute pathogen#infect()
-
-colorscheme gruvbox
-
 set laststatus=2
+set hidden
+set noswapfile 
+set nobackup
+set nowritebackup
+set history=50
+set wildmenu	
+set wildignore=**/node_modules,**.pyc,**.pyo,__pycache__
+set wildmode=list:longest,full
+set cursorline
+set visualbell
+set autowrite
+set autoread
+set hlsearch
+set smartcase
+set gdefault
+set showmatch
+set textwidth=80
+set list listchars=tab:»·,trail:·,nbsp:·
+"set formatoptions=cq
+set formatoptions=qrn1
+set wrapmargin=0
+set colorcolumn=+1
+set matchpairs+=<:>
+set diffopt+=vertical
+set pastetoggle=<F2>
 
 let g:lightline = {
   \     'active': {
@@ -137,13 +80,44 @@ let g:lightline = {
   \     }
   \ }
 
-set hidden
-set noswapfile "not sure if i'm going to keep this
-set wildignore=**/node_modules,**.pyc,**.pyo,__pycache__
 
 let g:netrw_banner=0
 let g:netrw_liststyle=3
+let g:html_indent_tags='li\|p'
+let c_comment_strings=1
 
+function! ToggleNumbersOn()
+    set nu!
+    set rnu
+endfunction
+function! ToggleRelativeOn()
+    set rnu!
+    set nu
+endfunction
+
+autocmd CmdwinEnter * nnoremap <CR> <CR>
+autocmd BufReadPost quickfix nnoremap <CR> <CR>
+autocmd FocusLost * call ToggleRelativeOn()
+autocmd FocusGained * call ToggleRelativeOn()
+autocmd InsertEnter * call ToggleRelativeOn()
+autocmd InsertLeave * call ToggleRelativeOn()
+
+nnoremap <CR> o<Esc>
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <silent> <leader>, :noh<CR>
+nnoremap j gj
+nnoremap k gk
+inoremap <C-U> <C-G>u<C-U>
+vnoremap <C-c> "*y
+map <silent><Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
+map <silent><Leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
+map Q gq
 nmap ,n :NERDTreeFind<CR>
 nmap ,m :NERDTreeToggle<CR>
 
+syntax on
+execute pathogen#infect()
+colorscheme gruvbox
