@@ -125,7 +125,6 @@ syntax on
 " color scheme
 set t_Co=256
 execute pathogen#infect()
-map <C-n> :NERDTreeToggle<CR>
 
 colorscheme gruvbox
 
@@ -137,3 +136,10 @@ let g:lightline = {
   \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
   \     }
   \ }
+
+set hidden
+set noswapfile "not sure if i'm going to keep this
+set wildignore=**/node_modules,**.pyc,**.pyo,__pycache__
+
+let g:netrw_banner=0
+let g:netrw_liststyle=3
