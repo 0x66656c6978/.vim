@@ -143,3 +143,7 @@ set wildignore=**/node_modules,**.pyc,**.pyo,__pycache__
 
 let g:netrw_banner=0
 let g:netrw_liststyle=3
+
+nmap ,n :NERDTreeFind<CR>
+nmap ,m :NERDTreeToggle<CR>
+
