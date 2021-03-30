@@ -1,4 +1,7 @@
 # .vim
+# y u no signal
+# mpf
+# discord yrr#3633
 my personal .vim folder
 
 ## setup
